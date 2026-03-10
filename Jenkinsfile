@@ -2,52 +2,40 @@ pipeline {
     agent any
 
     tools {
-        jdk 'JDK21'
-        maven 'Maven'
+        jdk 'JDK21'       // Force Jenkins to use JDK 21
+        maven 'Maven'     // Use configured Maven tool
     }
 
-
     stages {
+
+        stage('Verify Environment') {
+            steps {
+                bat 'echo JAVA_HOME=%JAVA_HOME%'
+                bat 'java -version'
+                bat 'mvn -version'
+            }
+        }
+
         stage('Checkout') {
             steps {
-                // Pull the latest code from GitHub
-                git branch: 'main', url: 'https://github.com/nkriznar/MavenAssingment.git'
+                git url: 'https://github.com/nkriznar/MavenAssingment.git',
+                    branch: 'main'
             }
         }
 
-        stage('Build') {
+        stage('Build and Package') {
             steps {
-                // Compile the project
-                bat 'mvn clean compile'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                // Run unit tests
-                bat 'mvn test'
-            }
-        }
-
-        stage('Package') {
-            steps {
-                // Package the application into a JAR
-                bat 'mvn package -DskipTests'
+                bat 'mvn clean package'
             }
         }
     }
 
     post {
         success {
-            echo 'Build completed successfully!'
-            // Archive the built JAR artifact
-            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            echo 'Build Successful ✅'
         }
         failure {
-            echo 'Build failed!'
-        }
-        always {
-            echo 'Pipeline finished.'
+            echo 'Build Failed ❌'
         }
     }
 }
