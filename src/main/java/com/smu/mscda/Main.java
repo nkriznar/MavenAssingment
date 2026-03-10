@@ -1,9 +1,7 @@
 package com.smu.mscda;
 
-import org.apache.commons.lang3.text.WordUtils;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import org.apache.commons.text.WordUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 import java.util.Scanner;
 
 public class Main {
@@ -29,19 +27,6 @@ public class Main {
     }
 
     public static String generateMD5Hex(String input) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] md5Bytes = md.digest(input.getBytes());
-
-            // Convert the byte array to a hexadecimal string
-            StringBuilder hexString = new StringBuilder();
-            for (byte md5Byte : md5Bytes) {
-                hexString.append(String.format("%02x", md5Byte));
-            }
-
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("MD5 algorithm not available", e);
-        }
+        return DigestUtils.md5Hex(input);
     }
 }

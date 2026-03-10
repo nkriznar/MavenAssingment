@@ -1,8 +1,8 @@
 import com.smu.mscda.Main;
-import org.apache.commons.lang3.text.WordUtils;
-import org.junit.Test;
+import org.apache.commons.text.WordUtils;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MyTestClass {
     @Test

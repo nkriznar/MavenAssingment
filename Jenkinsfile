@@ -23,7 +23,7 @@ pipeline {
             }
         }
 
-        stage('Build and Package') {
+        stage('Build, Test, and Package') {
             steps {
                 bat 'mvn clean package'
             }
@@ -31,6 +31,14 @@ pipeline {
     }
 
     post {
+        always {
+            // Publish JUnit Test Results
+            junit 'target/surefire-reports/*.xml'
+            
+            // Publish JaCoCo Code Coverage Reports
+            // Make sure the "JaCoCo plugin" is installed in Jenkins for this to work
+            jacoco()
+        }
         success {
             echo 'Build Successful ✅'
         }
